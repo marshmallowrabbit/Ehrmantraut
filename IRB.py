@@ -38,3 +38,5 @@ def opt_Analysis(df, riskRatio, slowLen,  fastLen, trend1, trend2, trend3, midLe
     df['shorttarget'] = df.apply(lambda row: abs((row.shortstop / row.shortlimit) - 1)*riskRatio, axis=1)
     df['shorttarget'] = df.apply(lambda row: (row.shortlimit * (1 - row.shorttarget)), axis=1)
     return df
+
+# leverage calculations needed

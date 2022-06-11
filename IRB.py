@@ -50,34 +50,3 @@ def Analysis(file_name):
     pd.set_option('display.max_columns',df.shape[0]+1)
     return df
 
-# print(Analysis(ohlc))
-
-def getSignals(df):
-    print('Getting signals...')
-    Longs = []
-    Shorts = []
-    ExitLongs = []
-    ExitShorts = []
-    maxLen = 50
-    for i in range(len(df)):
-        if 'y' in df['longOn'].iloc[i] and 'n' in df['longOn'].iloc[i-1]:
-            if df['High']>df['longlimit']:
-                Longs.append(df.iloc[i].name)
-                for j in maxLen-1:
-                    if (df['High'].iloc[i+j]>df['longtarget'].iloc[i+j]) or (df['Low'].iloc[i+j]<df['longstop'].iloc[i+j]):
-                        ExitLongs.append(df.iloc[i+j].name)
-    for i in range(len(df)):
-        if 'y' in df['shortOn'].iloc[i] and 'n' in df['shortOn'].iloc[i-1]:
-            if df['Low']>df['shortlimit']:
-                Shorts.append(df.iloc[i].name)
-                for j in maxLen-1:
-                    if (df['High'].iloc[i+j]>df['shortstop'].iloc[i+j]) or (df['Low'].iloc[i+j]<df['shortlimit'].iloc[i+j]):
-                        ExitShorts.append(df.iloc[i+j].name)
-    return Longs,Shorts,ExitLongs,ExitShorts
-print(getSignals(Analysis(ohlc)))
-
-def profitCalc(frame):
-    longs,longexits,shorts,shortexits = getSignals(frame)
-    Profits = ((frame.loc[longexits].Open.values - frame.loc[longs].Open.values)/frame.loc[longs].Open.values)\
-    + abs((frame.loc[shortexits].Open.values - frame.loc[shorts].Open.values)/frame.loc[shorts].Open.values)
-    return Profits

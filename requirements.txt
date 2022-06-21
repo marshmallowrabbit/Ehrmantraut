@@ -2,3 +2,4 @@ ccxt
 pandas
 numpy
 pandas_ta
+schedule
